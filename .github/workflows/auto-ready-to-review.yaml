@@ -6,8 +6,8 @@ jobs:
   set-ready-to-review-if-possible:
     runs-on: ubuntu-latest
     permissions: 
-      actions: write
-      checks: write
+      contents: write
+      packages: write
       pull-requests: write
     if: github.base_ref == 'main' &&
         contains(github.event.pull_request.labels.*.name, 'auto ready to review') &&
