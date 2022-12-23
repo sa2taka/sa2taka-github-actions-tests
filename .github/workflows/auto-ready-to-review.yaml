@@ -9,5 +9,5 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'auto ready to review') &&
         github.event.pull_request.draft
     steps:
-      - run: echo ${{ github.event.changes.base }}
-      - run: echo ${{ github.event.sender }}
+      - run: echo ${{ github.event.changes.base.ref }}
+      - run: echo ${{ github.event.sender.name }}
