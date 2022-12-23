@@ -17,13 +17,13 @@ jobs:
           script: |
             console.log(JSON.stringify(context))
             github.rest.issues.removeLabel({
-              issue_number: context.pull_request.number,
+              issue_number: context.payload.pull_request.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: ["auto ready to review"]
             })
             github.rest.pulls.update({
-              pull_number: context.pull_request.number,
+              pull_number: context..payload.pull_request.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               draft: false
