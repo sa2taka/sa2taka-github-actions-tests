@@ -5,10 +5,27 @@ on:
 jobs:
   set-ready-to-review-if-possible:
     runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: write
     if: github.base_ref == 'main' &&
         contains(github.event.pull_request.labels.*.name, 'auto ready to review') &&
         github.event.pull_request.draft &&
         github.event.changes.base.ref.from != 'main'
     steps:
-      - run: echo ${{ github.event.changes.base.ref.from }}
-      - run: echo ${{ github.event.sender.login }}
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            // this gets the number at the end of the content URL, which should be the issue/PR number
+            const issue_num = context.payload.project_card.content_url.split('/').pop()
+            github.rest.issues.removeLabel({
+              issue_number: github.event.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: ["auto ready to review"]
+            })
+            github.rest.pulls.update({
+              pull_number: github.event.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              draft: false
+            })
