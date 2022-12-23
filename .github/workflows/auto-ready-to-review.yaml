@@ -12,10 +12,8 @@ jobs:
         github.event.pull_request.draft &&
         github.event.changes.base.ref.from != 'main'
     steps:
-      - run: echo '${{ toJSON(github) }}'
-      - run: echo ${{ github.repository.repo }}
       - run: gh pr ready 'auto ready to review' -R $REPOSITORY && gh pr ready $PULL_REQUEST_NUMBER -R $REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          REPOSITORY: ${{ github.repository.repo }}
+          REPOSITORY: ${{ github.repository }}
