@@ -15,8 +15,6 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            // this gets the number at the end of the content URL, which should be the issue/PR number
-            const issue_num = context.payload.project_card.content_url.split('/').pop()
             github.rest.issues.removeLabel({
               issue_number: github.event.pull_request.number,
               owner: context.repo.owner,
