@@ -3,9 +3,9 @@ on:
   pull_request:
     types: [edited]
 jobs:
-  set-ready-to-reload-if-possible:
+  set-ready-to-review-if-possible:
     runs-on: ubuntu-latest
-    if: github.base_ref == 'master' &&
+    if: github.base_ref == 'main' &&
         contains(github.event.pull_request.labels.*.name, 'auto ready to review') &&
         github.event.pull_request.draft
     steps:
