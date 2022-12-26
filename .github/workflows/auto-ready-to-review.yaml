@@ -8,12 +8,11 @@ jobs:
     permissions: 
       contents: write
       pull-requests: write
-    if: ( github.base_ref == 'main' || startsWith(github.base_ref, 'feat/') || startsWith(github.base_ref, 'feature/') ) &&
-        github.event.requested_reviewers[0] == null
+    if: github.event.requested_reviewers[0] == null
         github.event.pull_request.draft &&
         github.event.changes.base.ref.from != github.base_ref
     steps:
-      - run: gh pr edit --remove-label 'auto ready to review' $PULL_REQUEST_NUMBER  -R $REPOSITORY && gh pr ready $PULL_REQUEST_NUMBER -R $REPOSITORY
+      - run: gh pr ready $PULL_REQUEST_NUMBER -R $REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
