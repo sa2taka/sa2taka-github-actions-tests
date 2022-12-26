@@ -8,7 +8,8 @@ jobs:
     permissions: 
       contents: write
       pull-requests: write
-    if: github.event.requested_reviewers[0] == null
+    if: ( github.base_ref == 'main' || startsWith(github.base_ref, 'feat/') || startsWith(github.base_ref, 'feature/') ) &&
+        github.event.requested_reviewers[0] == null &&
         github.event.pull_request.draft &&
         github.event.changes.base.ref.from != github.base_ref
     steps:
