@@ -1,0 +1,9 @@
+name: Print
+on:
+  pull_request:
+    types: [edited]
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ toJSON(github) }}'
