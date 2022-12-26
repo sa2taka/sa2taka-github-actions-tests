@@ -10,8 +10,8 @@ jobs:
       pull-requests: write
     if: ( 
           github.base_ref == 'main' ||
-          startsWith(github.base_ref, "feat/") ||
-          startsWith(github.base_ref, "feature/"")
+          startsWith(github.base_ref, 'feat/') ||
+          startsWith(github.base_ref, 'feature/')
         ) &&
         github.event.requested_reviewers[0] == null
         github.event.pull_request.draft &&
