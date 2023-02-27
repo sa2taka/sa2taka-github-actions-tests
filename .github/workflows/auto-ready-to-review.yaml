@@ -6,24 +6,15 @@ jobs:
   set-ready-to-review-if-possible:
     runs-on: ubuntu-latest
     permissions: 
+      contents: write
       pull-requests: write
-    if: github.base_ref == 'main' &&
-        contains(github.event.pull_request.labels.*.name, 'auto ready to review') &&
+    if: ( github.base_ref == 'main' || startsWith(github.base_ref, 'feat/') || startsWith(github.base_ref, 'feature/') ) &&
         github.event.pull_request.draft &&
-        github.event.changes.base.ref.from != 'main'
+        github.event.changes.base.ref.from != null &&
+        github.event.changes.base.ref.from != github.base_ref
     steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.removeLabel({
-              issue_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: ["auto ready to review"]
-            })
-            github.rest.pulls.update({
-              pull_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              draft: false
-            })
+      - run: gh pr ready $PULL_REQUEST_NUMBER -R $REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
