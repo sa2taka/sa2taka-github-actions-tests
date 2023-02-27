@@ -10,6 +10,7 @@ jobs:
       pull-requests: write
     if: ( github.base_ref == 'main' || startsWith(github.base_ref, 'feat/') || startsWith(github.base_ref, 'feature/') ) &&
         github.event.pull_request.draft &&
+        github.event.changes.base.ref.from != null &&
         github.event.changes.base.ref.from != github.base_ref
     steps:
       - run: gh pr ready $PULL_REQUEST_NUMBER -R $REPOSITORY
